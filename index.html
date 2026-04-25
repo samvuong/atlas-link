@@ -394,7 +394,7 @@
 
 <script>
   const params   = new URLSearchParams(location.search);
-  const API_BASE = (params.get('api') || '').replace(/\/$/, '');
+  const API_BASE = (params.get('api') || 'https://api.ascendagentic.com').replace(/\/$/, '');
 
   const form      = document.getElementById('emailForm');
   const btn       = document.getElementById('submitBtn');
