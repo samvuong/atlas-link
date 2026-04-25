@@ -366,13 +366,35 @@
     .footer-inner a { color: #9ed4cf; }
     .footer-links { display: flex; gap: 1rem; }
 
-    /* ── Chat bubble ── */
-    #chatBubble {
+    /* ── Chat launcher ── */
+    #chatLauncher {
       position: fixed;
       bottom: 24px;
       right: 24px;
-      width: 52px;
-      height: 52px;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+    }
+    #chatTeaser {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(26,29,38,.12);
+      padding: 10px 14px;
+      font-size: .82rem;
+      color: var(--text);
+      max-width: 200px;
+      line-height: 1.4;
+      cursor: pointer;
+      transition: opacity .3s, transform .3s;
+    }
+    #chatTeaser strong { display: block; margin-bottom: 2px; font-size: .85rem; }
+    #chatTeaser.hide { opacity: 0; pointer-events: none; transform: translateY(6px); }
+    #chatBubble {
+      width: 54px;
+      height: 54px;
       background: var(--accent);
       border-radius: 50%;
       display: flex;
@@ -381,78 +403,103 @@
       cursor: pointer;
       box-shadow: 0 4px 20px rgba(13,110,102,.35);
       transition: transform .15s, background .15s;
-      z-index: 200;
+      position: relative;
     }
-    #chatBubble:hover { transform: scale(1.08); background: var(--accent-hover); }
+    #chatBubble:hover { transform: scale(1.07); background: var(--accent-hover); }
     #chatBubble svg { width: 22px; height: 22px; fill: #fff; }
+    #chatBubble .notif {
+      position: absolute;
+      top: 2px; right: 2px;
+      width: 12px; height: 12px;
+      background: #f59e0b;
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+    }
 
-    #chatPanel {
+    /* ── Chat drawer ── */
+    #chatDrawer {
       position: fixed;
-      bottom: 88px;
-      right: 24px;
-      width: 340px;
-      max-height: 480px;
+      bottom: 0; right: 0;
+      width: 380px;
+      height: 100dvh;
+      max-height: 620px;
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      box-shadow: 0 8px 40px rgba(26,29,38,.15);
-      display: none;
+      border-left: 1px solid var(--border);
+      border-top: 1px solid var(--border);
+      border-radius: 16px 0 0 0;
+      box-shadow: -4px 0 40px rgba(26,29,38,.12);
+      display: flex;
       flex-direction: column;
       z-index: 199;
-      overflow: hidden;
+      transform: translateX(110%);
+      transition: transform .28s cubic-bezier(.4,0,.2,1);
     }
-    #chatPanel.open { display: flex; }
+    #chatDrawer.open { transform: translateX(0); }
 
-    .chat-header {
-      padding: 13px 16px;
+    .drawer-header {
+      padding: 14px 16px;
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 10px;
       background: var(--surface);
-    }
-    .chat-header .dot {
-      width: 8px; height: 8px;
-      background: #22c55e;
-      border-radius: 50%;
       flex-shrink: 0;
     }
-    .chat-header span {
-      font-size: .88rem;
-      font-weight: 700;
-      color: var(--text);
-      flex: 1;
+    .drawer-avatar {
+      width: 36px; height: 36px;
+      background: var(--accent-light);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
     }
-    .chat-header small {
-      font-size: .75rem;
-      color: var(--muted);
+    .drawer-info { flex: 1; }
+    .drawer-info strong { display: block; font-size: .9rem; color: var(--text); }
+    .drawer-info small { font-size: .75rem; color: #22c55e; font-weight: 600; }
+    .drawer-close {
+      background: none; border: none;
+      color: var(--muted); cursor: pointer;
+      font-size: 20px; line-height: 1; padding: 4px;
     }
-    .close-btn {
-      background: none;
-      border: none;
-      color: var(--muted);
-      cursor: pointer;
-      font-size: 18px;
-      line-height: 1;
-      padding: 0;
-    }
-    .close-btn:hover { color: var(--text); }
+    .drawer-close:hover { color: var(--text); }
 
     #chatMessages {
       flex: 1;
       overflow-y: auto;
-      padding: 14px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
       background: var(--bg);
     }
+
+    /* Quick-start chips */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 4px;
+    }
+    .chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: .78rem;
+      font-weight: 500;
+      color: var(--accent);
+      cursor: pointer;
+      transition: background .15s, border-color .15s;
+      white-space: nowrap;
+    }
+    .chip:hover { background: var(--accent-light); border-color: var(--accent); }
+
     .msg {
       max-width: 86%;
-      padding: 9px 12px;
-      border-radius: 12px;
+      padding: 10px 13px;
+      border-radius: 14px;
       font-size: .88rem;
-      line-height: 1.5;
+      line-height: 1.55;
     }
     .msg.agent {
       background: var(--surface);
@@ -467,14 +514,23 @@
       align-self: flex-end;
       border-bottom-right-radius: 4px;
     }
-    .msg.typing { color: var(--muted); font-style: italic; }
+    .msg.typing { color: var(--muted); font-style: italic; font-size: .82rem; }
+    .msg.lead-success {
+      background: #f0faf0;
+      border-color: #bbf7d0;
+      color: #166534;
+      font-size: .82rem;
+    }
 
+    .chat-footer {
+      flex-shrink: 0;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
     .chat-input-row {
       display: flex;
       gap: 8px;
       padding: 10px 12px;
-      border-top: 1px solid var(--border);
-      background: var(--surface);
     }
     #chatInput {
       flex: 1;
@@ -485,34 +541,47 @@
       font-size: .88rem;
       padding: 8px 11px;
       outline: none;
-      height: 36px;
+      height: 38px;
       font-family: inherit;
     }
     #chatInput:focus { border-color: var(--accent); }
     #chatInput::placeholder { color: #adb5c4; }
     #chatSend {
-      width: 36px;
-      height: 36px;
+      width: 38px; height: 38px;
       padding: 0;
       border-radius: 8px;
       background: var(--accent);
       border: none;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
       transition: background .15s;
     }
     #chatSend:hover { background: var(--accent-hover); }
     #chatSend:disabled { background: var(--border); cursor: not-allowed; }
     #chatSend svg { width: 15px; height: 15px; fill: #fff; }
+    .chat-book-btn {
+      display: block;
+      width: calc(100% - 24px);
+      margin: 0 12px 10px;
+      padding: 9px;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      text-align: center;
+      transition: border-color .15s, color .15s;
+    }
+    .chat-book-btn:hover { border-color: var(--accent); color: var(--accent); }
 
     /* ── Responsive ── */
     @media (max-width: 560px) {
       .header-inner { flex-direction: column; align-items: flex-start; }
-      #chatPanel { width: calc(100vw - 24px); right: 12px; }
-      #chatBubble { right: 16px; bottom: 16px; }
+      #chatDrawer { width: 100vw; border-radius: 16px 16px 0 0; border-left: none; max-height: 85dvh; }
+      #chatLauncher { right: 16px; bottom: 16px; }
     }
   </style>
 </head>
@@ -689,27 +758,50 @@
   </div>
 </footer>
 
-<!-- Chat bubble -->
-<div id="chatBubble" onclick="toggleChat()" title="Ask our AI">
-  <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.261 2 11.5c0 2.388.94 4.57 2.487 6.218L3 21l3.588-1.077A10.3 10.3 0 0 0 12 21c5.523 0 10-4.261 10-9.5S17.523 2 12 2Z"/></svg>
+<!-- Chat launcher -->
+<div id="chatLauncher">
+  <div id="chatTeaser" onclick="openChat()">
+    <strong>👋 Talk to Alex</strong>
+    Tell us what you're trying to automate
+  </div>
+  <div id="chatBubble" onclick="toggleChat()">
+    <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.261 2 11.5c0 2.388.94 4.57 2.487 6.218L3 21l3.588-1.077A10.3 10.3 0 0 0 12 21c5.523 0 10-4.261 10-9.5S17.523 2 12 2Z"/></svg>
+    <span class="notif"></span>
+  </div>
 </div>
 
-<div id="chatPanel">
-  <div class="chat-header">
-    <div class="dot"></div>
-    <span>Ascend AI</span>
-    <small>Ask anything</small>
-    <button class="close-btn" onclick="toggleChat()">×</button>
+<!-- Chat drawer -->
+<div id="chatDrawer">
+  <div class="drawer-header">
+    <div class="drawer-avatar">🤖</div>
+    <div class="drawer-info">
+      <strong>Alex · Ascend Agentic</strong>
+      <small>● Online now</small>
+    </div>
+    <button class="drawer-close" onclick="closeChat()">×</button>
   </div>
+
   <div id="chatMessages">
-    <div class="msg agent">Hi! I'm the Ascend Agentic AI. Ask me about domain agents, how we work, or how to get started. 👋</div>
+    <div class="msg agent">
+      Hey! I'm Alex — I help teams figure out if a domain AI agent is the right fit for their business. What are you looking to automate?
+    </div>
+    <div class="chips" id="chipRow">
+      <button class="chip" onclick="sendChip(this)">Real estate ops</button>
+      <button class="chip" onclick="sendChip(this)">Content & marketing</button>
+      <button class="chip" onclick="sendChip(this)">Developer workflows</button>
+      <button class="chip" onclick="sendChip(this)">Something else</button>
+    </div>
   </div>
-  <div class="chat-input-row">
-    <input id="chatInput" type="text" placeholder="Ask something…" autocomplete="off"
-      onkeydown="if(event.key==='Enter'){event.preventDefault();sendChat();}">
-    <button id="chatSend" onclick="sendChat()">
-      <svg viewBox="0 0 24 24"><path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-    </button>
+
+  <div class="chat-footer">
+    <div class="chat-input-row">
+      <input id="chatInput" type="text" placeholder="Type a message…" autocomplete="off"
+        onkeydown="if(event.key==='Enter'){event.preventDefault();sendChat();}">
+      <button id="chatSend" onclick="sendChat()">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+    <button class="chat-book-btn" onclick="bookCall()">📅 Skip ahead — book a call with Sam</button>
   </div>
 </div>
 
@@ -723,28 +815,19 @@
     const email  = document.getElementById('email').value.trim();
     const name   = document.getElementById('name').value.trim();
     const domain = document.getElementById('domain').value.trim();
-    const msg    = document.getElementById('statusMsg');
 
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       showMsg('Please enter a valid email address.', '#f87171'); return;
     }
-
     const btn = e.target.querySelector('button');
     btn.disabled = true; btn.textContent = 'Sending…';
-
-    const payload = { email, name, phone: '', sms_opt_in: false,
-      source: 'ascendagentic_homepage', domain_interest: domain };
-
-    if (API_BASE) {
-      try {
-        const res = await fetch(`${API_BASE}/api/contacts/submit`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        if (!res.ok) throw new Error();
-      } catch { /* best-effort */ }
-    }
-
+    try {
+      await fetch('https://api.ascendagentic.com/api/contacts/submit', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, name, phone: '', sms_opt_in: false,
+          source: 'ascendagentic_homepage', note: domain }),
+      });
+    } catch { /* best-effort */ }
     showMsg("You're on the list — we'll be in touch soon.", '#fff');
     btn.disabled = false; btn.textContent = 'Request access';
     e.target.reset();
@@ -758,22 +841,50 @@
 
   // ── Chat ──
   let chatSessionId = null;
-  let chatBusy = false;
+  let chatBusy      = false;
+  let teaserTimer   = null;
 
+  // Auto-open teaser after 5s
+  teaserTimer = setTimeout(() => {
+    const t = document.getElementById('chatTeaser');
+    if (t) t.classList.remove('hide');
+  }, 5000);
+  document.getElementById('chatTeaser').classList.add('hide');
+
+  function openChat()  {
+    document.getElementById('chatDrawer').classList.add('open');
+    document.getElementById('chatTeaser').classList.add('hide');
+    document.getElementById('chatBubble').querySelector('.notif').style.display = 'none';
+    setTimeout(() => document.getElementById('chatInput').focus(), 300);
+  }
+  function closeChat() { document.getElementById('chatDrawer').classList.remove('open'); }
   function toggleChat() {
-    const panel = document.getElementById('chatPanel');
-    panel.classList.toggle('open');
-    if (panel.classList.contains('open')) document.getElementById('chatInput').focus();
+    const open = document.getElementById('chatDrawer').classList.contains('open');
+    open ? closeChat() : openChat();
   }
 
   function appendMsg(text, role) {
+    const msgs = document.getElementById('chatMessages');
+    // Remove chips after first user message
+    if (role === 'user') {
+      const chips = document.getElementById('chipRow');
+      if (chips) chips.remove();
+    }
     const el = document.createElement('div');
     el.className = 'msg ' + role;
     el.textContent = text;
-    const msgs = document.getElementById('chatMessages');
     msgs.appendChild(el);
     msgs.scrollTop = msgs.scrollHeight;
     return el;
+  }
+
+  function sendChip(btn) {
+    document.getElementById('chatInput').value = btn.textContent;
+    sendChat();
+  }
+
+  function bookCall() {
+    window.open('mailto:sam@ascendagentic.com?subject=Booking a call — Ascend Agentic&body=Hi Sam, I came across Ascend Agentic and would love to chat about domain agents for my business.', '_blank');
   }
 
   async function sendChat() {
@@ -782,12 +893,13 @@
     const text  = input.value.trim();
     if (!text) return;
     input.value = '';
+    openChat();
     appendMsg(text, 'user');
     chatBusy = true;
     document.getElementById('chatSend').disabled = true;
-    const typing = appendMsg('…', 'agent typing');
+    const typing = appendMsg('typing…', 'agent typing');
     try {
-      const res = await fetch(`${CHAT_BASE}/chat`, {
+      const res  = await fetch(`${CHAT_BASE}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text, session_id: chatSessionId, site: 'atlas' }),
@@ -796,6 +908,13 @@
       typing.remove();
       chatSessionId = data.session_id;
       appendMsg(data.answer, 'agent');
+      if (data.lead_captured) {
+        const el = document.createElement('div');
+        el.className = 'msg agent lead-success';
+        el.textContent = '✅ Got it — Sam will reach out to you shortly.';
+        document.getElementById('chatMessages').appendChild(el);
+        document.getElementById('chatMessages').scrollTop = 99999;
+      }
     } catch {
       typing.remove();
       appendMsg("Couldn't connect right now — try again in a moment.", 'agent');
