@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATLAS — Stay Connected</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #060611;
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+      padding: 24px;
+    }
+
+    .card {
+      background: #0e0e1f;
+      border: 1px solid #1a1a32;
+      border-radius: 16px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 24px 60px rgba(0,0,0,.5);
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #6366f1;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #e2e8f8;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+
+    .sub {
+      font-size: 15px;
+      color: #8891aa;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: #6b7394;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"] {
+      width: 100%;
+      background: #10101f;
+      border: 1px solid #252545;
+      border-radius: 8px;
+      color: #e2e8f8;
+      font-size: 15px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      outline: none;
+      transition: border-color .2s;
+    }
+    input:focus { border-color: #6366f1; }
+    input::placeholder { color: #3a3d5a; }
+
+    /* consent checkbox row */
+    .consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .consent input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+      margin-top: 2px;
+      accent-color: #6366f1;
+      cursor: pointer;
+      border: 1px solid #252545;
+      border-radius: 4px;
+    }
+    .consent-text {
+      font-size: 12px;
+      color: #6b7394;
+      line-height: 1.55;
+    }
+    .consent-text strong { color: #a0a8c0; }
+
+    button {
+      width: 100%;
+      background: #6366f1;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 13px;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+      letter-spacing: .02em;
+    }
+    button:hover  { background: #4f52d4; }
+    button:active { transform: scale(.98); }
+    button:disabled { background: #2a2a4a; color: #555; cursor: not-allowed; }
+
+    .status {
+      margin-top: 20px;
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+      display: none;
+    }
+    .status.success {
+      background: #0a1f14;
+      border: 1px solid #1a4a2e;
+      color: #4ade80;
+      display: block;
+    }
+    .status.error {
+      background: #1f0a0a;
+      border: 1px solid #4a1a1a;
+      color: #f87171;
+      display: block;
+    }
+
+    .footer {
+      margin-top: 28px;
+      font-size: 11px;
+      color: #2e3050;
+      text-align: center;
+      line-height: 1.7;
+    }
+    .footer a { color: #4a4f78; text-decoration: none; }
+    .footer a:hover { color: #6366f1; }
+
+    .thanks {
+      text-align: center;
+      display: none;
+    }
+    .thanks .check {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    .thanks h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #e2e8f8;
+      margin-bottom: 10px;
+    }
+    .thanks p {
+      font-size: 14px;
+      color: #8891aa;
+      line-height: 1.6;
+    }
+    .thanks .stop-note {
+      margin-top: 20px;
+      font-size: 11px;
+      color: #3a3d5a;
+    }
+  </style>
+</head>
+<body>
+<div class="card">
+
+  <!-- Form view -->
+  <div id="formView">
+    <div class="badge">ATLAS · Ascend Agentic</div>
+    <h1>Let's stay<br>in touch</h1>
+    <p class="sub">Get early access to our AI platform. We'll reach out with updates and what we're building next.</p>
+
+    <form id="emailForm" novalidate>
+      <label for="name">Your name</label>
+      <input type="text" id="name" name="name" placeholder="Sam Vuong" autocomplete="name">
+
+      <label for="email">Email address <span style="color:#f87171">*</span></label>
+      <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+
+      <label for="phone">Mobile number <span style="color:#6b7394">(optional)</span></label>
+      <input type="tel" id="phone" name="phone" placeholder="+1 (917) 555-0100" autocomplete="tel">
+
+      <!-- SMS consent — required if phone is provided -->
+      <div class="consent" id="consentRow" style="display:none">
+        <input type="checkbox" id="smsConsent" name="smsConsent">
+        <span class="consent-text">
+          <strong>I agree to receive SMS messages</strong> from Ascend Agentic / ATLAS
+          at the mobile number above. Message &amp; data rates may apply.
+          Message frequency varies. Reply <strong>STOP</strong> to opt out at any time.
+          Reply <strong>HELP</strong> for help.
+        </span>
+      </div>
+
+      <button type="submit" id="submitBtn">Get early access</button>
+    </form>
+
+    <div id="status" class="status"></div>
+
+    <div class="footer">
+      No spam. Unsubscribe any time.<br>
+      By submitting this form you agree to our
+      <a href="#">Privacy Policy</a> and
+      <a href="#">Terms of Service</a>.<br><br>
+      Ascend Agentic · ATLAS Platform
+    </div>
+  </div>
+
+  <!-- Success view -->
+  <div class="thanks" id="thanksView">
+    <div class="check">✅</div>
+    <h2>You're on the list!</h2>
+    <p id="thanksMsg">We'll be in touch soon.</p>
+    <p class="stop-note">If you opted in to SMS, reply STOP at any time to unsubscribe.</p>
+    <div class="footer" style="margin-top:24px">Ascend Agentic · ATLAS Platform</div>
+  </div>
+
+</div>
+
+<script>
+  const params   = new URLSearchParams(location.search);
+  const API_BASE = (params.get('api') || '').replace(/\/$/, '');
+
+  const form      = document.getElementById('emailForm');
+  const btn       = document.getElementById('submitBtn');
+  const statusEl  = document.getElementById('status');
+  const formView  = document.getElementById('formView');
+  const thanks    = document.getElementById('thanksView');
+  const phoneEl   = document.getElementById('phone');
+  const consentRow = document.getElementById('consentRow');
+  const consentCb  = document.getElementById('smsConsent');
+
+  // Show / hide consent checkbox when phone is entered
+  phoneEl.addEventListener('input', () => {
+    consentRow.style.display = phoneEl.value.trim() ? 'flex' : 'none';
+  });
+
+  function showStatus(msg, type) {
+    statusEl.textContent = msg;
+    statusEl.className = 'status ' + type;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById('email').value.trim();
+    const name  = document.getElementById('name').value.trim();
+    const phone = phoneEl.value.trim();
+    const smsOptIn = consentCb.checked;
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showStatus('Please enter a valid email address.', 'error');
+      return;
+    }
+
+    if (phone && !smsOptIn) {
+      showStatus('Please check the SMS consent box to continue, or remove your phone number.', 'error');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
+    statusEl.className = 'status';
+
+    const payload = {
+      email,
+      name,
+      phone:      phone || '',
+      sms_opt_in: smsOptIn,
+      source:     'sms_link',
+      consent_text: smsOptIn
+        ? 'User checked: I agree to receive SMS messages from Ascend Agentic / ATLAS'
+        : '',
+    };
+
+    if (API_BASE) {
+      try {
+        const res  = await fetch(`${API_BASE}/api/contacts/submit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || 'Submission failed');
+        _showThanks(email, smsOptIn);
+        return;
+      } catch (err) {
+        showStatus(err.message || 'Something went wrong — please try again.', 'error');
+        btn.disabled = false;
+        btn.textContent = 'Get early access';
+        return;
+      }
+    }
+
+    // No API configured — show success anyway
+    setTimeout(() => _showThanks(email, smsOptIn), 500);
+  });
+
+  function _showThanks(email, smsOptIn) {
+    document.getElementById('thanksMsg').innerHTML =
+      `We'll be in touch soon.<br>Keep an eye on <strong style="color:#e2e8f8">${email}</strong>.`;
+    if (!smsOptIn) {
+      document.querySelector('.stop-note').style.display = 'none';
+    }
+    formView.style.display = 'none';
+    thanks.style.display   = 'block';
+  }
+</script>
+</body>
+</html>
