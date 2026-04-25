@@ -3,178 +3,368 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ATLAS — Stay Connected</title>
+  <meta name="description" content="Ascend Agentic builds agentic AI infrastructure — domain-specific AI agents deployed as a complete, managed stack for your industry.">
+  <title>Ascend Agentic — Domain AI Agents, Deployed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg:           #fafbfc;
+      --surface:      #ffffff;
+      --text:         #1a1d26;
+      --muted:        #5c6578;
+      --accent:       #0d6e66;
+      --accent-hover: #0a5751;
+      --accent-light: #e8f3f2;
+      --border:       #e2e6ee;
+      --radius:       10px;
+      --shadow:       0 1px 3px rgba(26,29,38,.08);
+      --max:          960px;
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
 
     body {
-      min-height: 100vh;
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: var(--shadow);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      padding: .85rem 1.25rem;
+    }
+    .logo {
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+    .logo span { color: var(--accent); }
+    .nav {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: .5rem 1.25rem;
+    }
+    .nav a {
+      color: var(--muted);
+      font-size: .92rem;
+      font-weight: 500;
+      transition: color .15s;
+    }
+    .nav a:hover { color: var(--accent); }
+    .btn {
+      display: inline-block;
+      padding: .52rem 1.1rem;
+      background: var(--accent);
+      color: #fff;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: .9rem;
+      border: 2px solid var(--accent);
+      transition: background .15s, border-color .15s;
+      cursor: pointer;
+    }
+    .btn:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+    .btn-ghost:hover { background: rgba(13,110,102,.07); }
+    .btn-sm { padding: .38rem .85rem; font-size: .85rem; }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(160deg, var(--accent-light) 0%, var(--bg) 55%);
+      padding: 4rem 0 4.5rem;
+    }
+    .eyebrow {
+      display: inline-block;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .6rem;
+    }
+    .hero h1 {
+      font-size: clamp(1.8rem, 4.5vw, 2.6rem);
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--text);
+      max-width: 18ch;
+      margin-bottom: 1.1rem;
+    }
+    .hero h1 em { color: var(--accent); font-style: normal; }
+    .lede {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 52ch;
+      margin-bottom: 1.75rem;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .75rem;
+    }
+    .hero-badge {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-top: 2.5rem;
+      font-size: .82rem;
+      color: var(--muted);
+    }
+    .hero-badge .dot {
+      width: 8px; height: 8px;
+      background: #22c55e;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── Sections ── */
+    .section { padding: 3.5rem 0; }
+    .section-alt {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .section-label {
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .5rem;
+    }
+    .section h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: .65rem;
+    }
+    .section-intro {
+      color: var(--muted);
+      max-width: 62ch;
+      margin-bottom: 2.25rem;
+    }
+
+    /* ── Cards grid ── */
+    .grid-3 {
+      display: grid;
+      gap: 1.25rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      list-style: none;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+    .card-icon {
+      font-size: 1.5rem;
+      margin-bottom: .65rem;
+    }
+    .card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: .4rem;
+    }
+    .card p {
+      color: var(--muted);
+      font-size: .95rem;
+      margin: 0;
+    }
+
+    /* ── Domain agents ── */
+    .domains {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      list-style: none;
+    }
+    .domain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.35rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: .35rem;
+    }
+    .domain-card .tag {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      border-radius: 20px;
+      padding: .15rem .55rem;
+      align-self: flex-start;
+    }
+    .domain-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    .domain-card p {
+      font-size: .88rem;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* ── How it works ── */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      counter-reset: steps;
+      list-style: none;
+      max-width: 640px;
+    }
+    .step {
+      display: flex;
+      gap: 1.25rem;
+      padding-bottom: 2rem;
+      position: relative;
+    }
+    .step:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 18px;
+      top: 40px;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+    .step-num {
+      counter-increment: steps;
+      width: 38px;
+      height: 38px;
+      min-width: 38px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: .85rem;
+      font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #060611;
-      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
-      padding: 24px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
     }
-
-    .card {
-      background: #0e0e1f;
-      border: 1px solid #1a1a32;
-      border-radius: 16px;
-      padding: 48px 40px;
-      width: 100%;
-      max-width: 440px;
-      box-shadow: 0 24px 60px rgba(0,0,0,.5);
-    }
-
-    .badge {
-      display: inline-block;
-      font-size: 11px;
+    .step-body h3 {
+      font-size: 1rem;
       font-weight: 700;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: #6366f1;
-      margin-bottom: 16px;
+      margin-bottom: .25rem;
+      padding-top: .45rem;
+    }
+    .step-body p {
+      color: var(--muted);
+      font-size: .95rem;
+      margin: 0;
     }
 
-    h1 {
-      font-size: 26px;
-      font-weight: 800;
-      color: #e2e8f8;
-      line-height: 1.25;
-      margin-bottom: 12px;
+    /* ── Early access form ── */
+    .cta-section {
+      background: var(--accent);
+      padding: 3.5rem 0;
     }
-
-    .sub {
-      font-size: 15px;
-      color: #8891aa;
-      line-height: 1.6;
-      margin-bottom: 32px;
-    }
-
-    label {
-      display: block;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      color: #6b7394;
-      margin-bottom: 6px;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"] {
-      width: 100%;
-      background: #10101f;
-      border: 1px solid #252545;
-      border-radius: 8px;
-      color: #e2e8f8;
-      font-size: 15px;
-      padding: 12px 14px;
-      margin-bottom: 16px;
-      outline: none;
-      transition: border-color .2s;
-    }
-    input:focus { border-color: #6366f1; }
-    input::placeholder { color: #3a3d5a; }
-
-    /* consent checkbox row */
-    .consent {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    .consent input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      min-width: 18px;
-      margin-top: 2px;
-      accent-color: #6366f1;
-      cursor: pointer;
-      border: 1px solid #252545;
-      border-radius: 4px;
-    }
-    .consent-text {
-      font-size: 12px;
-      color: #6b7394;
-      line-height: 1.55;
-    }
-    .consent-text strong { color: #a0a8c0; }
-
-    button {
-      width: 100%;
-      background: #6366f1;
+    .cta-section h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
       color: #fff;
+      margin-bottom: .5rem;
+    }
+    .cta-section p {
+      color: rgba(255,255,255,.8);
+      margin-bottom: 1.5rem;
+      max-width: 50ch;
+    }
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .75rem;
+      max-width: 500px;
+    }
+    .form-row input {
+      flex: 1;
+      min-width: 200px;
+      padding: .65rem 1rem;
+      border-radius: var(--radius);
       border: none;
-      border-radius: 8px;
-      font-size: 15px;
+      font-family: inherit;
+      font-size: .95rem;
+      outline: none;
+      color: var(--text);
+    }
+    .form-row input:focus { box-shadow: 0 0 0 3px rgba(255,255,255,.4); }
+    .btn-white {
+      background: #fff;
+      color: var(--accent);
+      border-color: #fff;
       font-weight: 700;
-      padding: 13px;
-      cursor: pointer;
-      transition: background .2s, transform .1s;
-      letter-spacing: .02em;
     }
-    button:hover  { background: #4f52d4; }
-    button:active { transform: scale(.98); }
-    button:disabled { background: #2a2a4a; color: #555; cursor: not-allowed; }
-
-    .status {
-      margin-top: 20px;
-      padding: 14px 16px;
-      border-radius: 8px;
-      font-size: 14px;
-      line-height: 1.5;
+    .btn-white:hover { background: #f0faf9; }
+    .form-note {
+      font-size: .78rem;
+      color: rgba(255,255,255,.65);
+      margin-top: .65rem;
+    }
+    .status-msg {
+      margin-top: .75rem;
+      font-size: .9rem;
+      font-weight: 600;
+      color: #fff;
       display: none;
     }
-    .status.success {
-      background: #0a1f14;
-      border: 1px solid #1a4a2e;
-      color: #4ade80;
-      display: block;
-    }
-    .status.error {
-      background: #1f0a0a;
-      border: 1px solid #4a1a1a;
-      color: #f87171;
-      display: block;
-    }
 
-    .footer {
-      margin-top: 28px;
-      font-size: 11px;
-      color: #2e3050;
-      text-align: center;
-      line-height: 1.7;
+    /* ── Footer ── */
+    .site-footer {
+      background: #1a1d26;
+      color: #c5cad6;
+      padding: 2rem 0;
+      font-size: .88rem;
     }
-    .footer a { color: #4a4f78; text-decoration: none; }
-    .footer a:hover { color: #6366f1; }
-
-    .thanks {
-      text-align: center;
-      display: none;
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: .75rem;
     }
-    .thanks .check {
-      font-size: 48px;
-      margin-bottom: 16px;
-    }
-    .thanks h2 {
-      font-size: 22px;
-      font-weight: 800;
-      color: #e2e8f8;
-      margin-bottom: 10px;
-    }
-    .thanks p {
-      font-size: 14px;
-      color: #8891aa;
-      line-height: 1.6;
-    }
-    .thanks .stop-note {
-      margin-top: 20px;
-      font-size: 11px;
-      color: #3a3d5a;
-    }
+    .footer-inner p { margin: 0; }
+    .footer-inner a { color: #9ed4cf; }
+    .footer-links { display: flex; gap: 1rem; }
 
     /* ── Chat bubble ── */
     #chatBubble {
@@ -183,18 +373,18 @@
       right: 24px;
       width: 52px;
       height: 52px;
-      background: #6366f1;
+      background: var(--accent);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 4px 20px rgba(99,102,241,.45);
+      box-shadow: 0 4px 20px rgba(13,110,102,.35);
       transition: transform .15s, background .15s;
-      z-index: 100;
+      z-index: 200;
     }
-    #chatBubble:hover { transform: scale(1.08); background: #4f52d4; }
-    #chatBubble svg { width: 24px; height: 24px; fill: #fff; }
+    #chatBubble:hover { transform: scale(1.08); background: var(--accent-hover); }
+    #chatBubble svg { width: 22px; height: 22px; fill: #fff; }
 
     #chatPanel {
       position: fixed;
@@ -202,47 +392,51 @@
       right: 24px;
       width: 340px;
       max-height: 480px;
-      background: #0e0e1f;
-      border: 1px solid #1a1a32;
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 16px;
-      box-shadow: 0 24px 60px rgba(0,0,0,.6);
+      box-shadow: 0 8px 40px rgba(26,29,38,.15);
       display: none;
       flex-direction: column;
-      z-index: 99;
+      z-index: 199;
       overflow: hidden;
     }
     #chatPanel.open { display: flex; }
 
     .chat-header {
-      padding: 14px 16px;
-      border-bottom: 1px solid #1a1a32;
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 9px;
+      background: var(--surface);
     }
     .chat-header .dot {
       width: 8px; height: 8px;
-      background: #4ade80;
+      background: #22c55e;
       border-radius: 50%;
       flex-shrink: 0;
     }
     .chat-header span {
-      font-size: 13px;
+      font-size: .88rem;
       font-weight: 700;
-      color: #e2e8f8;
+      color: var(--text);
       flex: 1;
     }
-    .chat-header .close-btn {
+    .chat-header small {
+      font-size: .75rem;
+      color: var(--muted);
+    }
+    .close-btn {
       background: none;
       border: none;
-      color: #6b7394;
+      color: var(--muted);
       cursor: pointer;
       font-size: 18px;
-      padding: 0;
-      width: auto;
       line-height: 1;
+      padding: 0;
     }
-    .chat-header .close-btn:hover { color: #e2e8f8; }
+    .close-btn:hover { color: var(--text); }
 
     #chatMessages {
       flex: 1;
@@ -251,55 +445,57 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      background: var(--bg);
     }
     .msg {
-      max-width: 85%;
+      max-width: 86%;
       padding: 9px 12px;
       border-radius: 12px;
-      font-size: 13px;
-      line-height: 1.55;
+      font-size: .88rem;
+      line-height: 1.5;
     }
     .msg.agent {
-      background: #16163a;
-      color: #c8cfea;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
       align-self: flex-start;
       border-bottom-left-radius: 4px;
     }
     .msg.user {
-      background: #6366f1;
+      background: var(--accent);
       color: #fff;
       align-self: flex-end;
       border-bottom-right-radius: 4px;
     }
-    .msg.typing { color: #4a4f78; font-style: italic; }
+    .msg.typing { color: var(--muted); font-style: italic; }
 
     .chat-input-row {
       display: flex;
       gap: 8px;
       padding: 10px 12px;
-      border-top: 1px solid #1a1a32;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
     }
     #chatInput {
       flex: 1;
-      background: #10101f;
-      border: 1px solid #252545;
+      background: var(--bg);
+      border: 1px solid var(--border);
       border-radius: 8px;
-      color: #e2e8f8;
-      font-size: 13px;
-      padding: 9px 12px;
+      color: var(--text);
+      font-size: .88rem;
+      padding: 8px 11px;
       outline: none;
-      resize: none;
-      height: 38px;
-      margin-bottom: 0;
+      height: 36px;
+      font-family: inherit;
     }
-    #chatInput:focus { border-color: #6366f1; }
-    #chatInput::placeholder { color: #3a3d5a; }
+    #chatInput:focus { border-color: var(--accent); }
+    #chatInput::placeholder { color: #adb5c4; }
     #chatSend {
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
       padding: 0;
       border-radius: 8px;
-      background: #6366f1;
+      background: var(--accent);
       border: none;
       cursor: pointer;
       display: flex;
@@ -308,176 +504,256 @@
       flex-shrink: 0;
       transition: background .15s;
     }
-    #chatSend:hover { background: #4f52d4; }
-    #chatSend:disabled { background: #2a2a4a; cursor: not-allowed; }
-    #chatSend svg { width: 16px; height: 16px; fill: #fff; }
+    #chatSend:hover { background: var(--accent-hover); }
+    #chatSend:disabled { background: var(--border); cursor: not-allowed; }
+    #chatSend svg { width: 15px; height: 15px; fill: #fff; }
+
+    /* ── Responsive ── */
+    @media (max-width: 560px) {
+      .header-inner { flex-direction: column; align-items: flex-start; }
+      #chatPanel { width: calc(100vw - 24px); right: 12px; }
+      #chatBubble { right: 16px; bottom: 16px; }
+    }
   </style>
 </head>
 <body>
-<div class="card">
 
-  <!-- Form view -->
-  <div id="formView">
-    <div class="badge">ATLAS · Ascend Agentic</div>
-    <h1>Let's stay<br>in touch</h1>
-    <p class="sub">Get early access to our AI platform. We'll reach out with updates and what we're building next.</p>
+<!-- Header -->
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="logo" href="/">Ascend<span>Agentic</span></a>
+    <nav class="nav">
+      <a href="#how-it-works">How it works</a>
+      <a href="#domains">Domains</a>
+      <a href="#early-access" class="btn btn-sm">Get early access</a>
+    </nav>
+  </div>
+</header>
 
-    <form id="emailForm" novalidate>
-      <label for="name">Your name</label>
-      <input type="text" id="name" name="name" placeholder="Sam Vuong" autocomplete="name">
-
-      <label for="email">Email address <span style="color:#f87171">*</span></label>
-      <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
-
-      <label for="phone">Mobile number <span style="color:#6b7394">(optional)</span></label>
-      <input type="tel" id="phone" name="phone" placeholder="+1 (917) 555-0100" autocomplete="tel">
-
-      <!-- SMS consent — required if phone is provided -->
-      <div class="consent" id="consentRow" style="display:none">
-        <input type="checkbox" id="smsConsent" name="smsConsent">
-        <span class="consent-text">
-          <strong>I agree to receive SMS messages</strong> from Ascend Agentic / ATLAS
-          at the mobile number above. Message &amp; data rates may apply.
-          Message frequency varies. Reply <strong>STOP</strong> to opt out at any time.
-          Reply <strong>HELP</strong> for help.
-        </span>
-      </div>
-
-      <button type="submit" id="submitBtn">Get early access</button>
-    </form>
-
-    <div id="status" class="status"></div>
-
-    <div class="footer">
-      No spam. Unsubscribe any time.<br>
-      By submitting this form you agree to our
-      <a href="#">Privacy Policy</a> and
-      <a href="#">Terms of Service</a>.<br><br>
-      Ascend Agentic · ATLAS Platform
+<!-- Hero -->
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Agentic AI Infrastructure</p>
+    <h1>Domain AI agents.<br><em>Deployed in a box.</em></h1>
+    <p class="lede">
+      We build and run the full agentic stack — orchestration, memory, tooling, and guardrails —
+      pre-tuned for your industry. You get a production-ready AI agent without building the infrastructure.
+    </p>
+    <div class="hero-actions">
+      <a class="btn" href="#early-access">Get early access</a>
+      <a class="btn btn-ghost" href="#how-it-works">See how it works</a>
+    </div>
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Infrastructure live — early access open now
     </div>
   </div>
+</section>
 
-  <!-- Success view -->
-  <div class="thanks" id="thanksView">
-    <div class="check">✅</div>
-    <h2>You're on the list!</h2>
-    <p id="thanksMsg">We'll be in touch soon.</p>
-    <p class="stop-note">If you opted in to SMS, reply STOP at any time to unsubscribe.</p>
-    <div class="footer" style="margin-top:24px">Ascend Agentic · ATLAS Platform</div>
+<!-- Why Ascend Agentic -->
+<section class="section">
+  <div class="wrap">
+    <p class="section-label">Why Ascend Agentic</p>
+    <h2>Built for the people who can't wait for AI to "be ready"</h2>
+    <p class="section-intro">
+      Generic LLM wrappers break in production. We build domain-specific agentic infrastructure —
+      the full stack from planning and memory to tool execution and escalation — so your AI agent
+      works reliably from day one.
+    </p>
+    <ul class="grid-3">
+      <li class="card">
+        <div class="card-icon">⚡</div>
+        <h3>Full-stack orchestration</h3>
+        <p>Planner, executor, critic, and memory agents working in concert.
+           Built on AXON — our production-grade multi-agent engine.</p>
+      </li>
+      <li class="card">
+        <div class="card-icon">🎯</div>
+        <h3>Domain-tuned out of the box</h3>
+        <p>Each agent is pre-trained on your vertical's language, workflows,
+           and edge cases — not a generic prompt on top of a foundation model.</p>
+      </li>
+      <li class="card">
+        <div class="card-icon">🔒</div>
+        <h3>Guardrails and control built in</h3>
+        <p>Escalation paths, audit logging, human-in-the-loop gates,
+           and scope enforcement — production-safe from the start.</p>
+      </li>
+    </ul>
   </div>
+</section>
 
-</div>
+<!-- Domain agents -->
+<section class="section section-alt" id="domains">
+  <div class="wrap">
+    <p class="section-label">Domain agents</p>
+    <h2>Specialized agents for specific industries</h2>
+    <p class="section-intro">
+      Each domain agent is a complete, self-contained stack — not a configuration on a generic platform.
+      We handle the infrastructure. You handle your business.
+    </p>
+    <ul class="domains">
+      <li class="domain-card">
+        <span class="tag">Property</span>
+        <h3>Real Estate & Property Management</h3>
+        <p>Listing intake, tenant screening, inquiry handling, and scheduling — fully autonomous.</p>
+      </li>
+      <li class="domain-card">
+        <span class="tag">Content</span>
+        <h3>Brand & Content Intelligence</h3>
+        <p>Agentic content curation, publishing pipelines, and brand monitoring at scale.</p>
+      </li>
+      <li class="domain-card">
+        <span class="tag">Dev</span>
+        <h3>Developer Workflow Automation</h3>
+        <p>Code review, task planning, CI orchestration, and engineering ops agents.</p>
+      </li>
+      <li class="domain-card">
+        <span class="tag">Ops</span>
+        <h3>Business Operations</h3>
+        <p>CRM automation, lead routing, scheduling, and cross-tool workflow agents.</p>
+      </li>
+      <li class="domain-card">
+        <span class="tag">Custom</span>
+        <h3>Your Domain</h3>
+        <p>We scope and build domain agents for verticals not listed here. Tell us what you need.</p>
+      </li>
+    </ul>
+  </div>
+</section>
 
-<!-- ── Chat bubble ── -->
-<div id="chatBubble" title="Ask ATLAS AI" onclick="toggleChat()">
-  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 2C6.477 2 2 6.261 2 11.5c0 2.388.94 4.57 2.487 6.218L3 21l3.588-1.077A10.3 10.3 0 0 0 12 21c5.523 0 10-4.261 10-9.5S17.523 2 12 2Z"/>
-  </svg>
+<!-- How it works -->
+<section class="section" id="how-it-works">
+  <div class="wrap">
+    <p class="section-label">How it works</p>
+    <h2>From scoping to live agent in weeks</h2>
+    <p class="section-intro">
+      No months-long AI projects. We deploy a working agent in your domain fast —
+      then iterate on feedback.
+    </p>
+    <ol class="steps">
+      <li class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Domain scoping call</h3>
+          <p>We map your workflows, data sources, and goals. You walk away with
+             a clear picture of what the agent will own and what it will escalate.</p>
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Infrastructure provisioned</h3>
+          <p>We stand up the full AXON stack — orchestration, memory, RAG, tooling,
+             and integrations — tuned to your domain and connected to your existing systems.</p>
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Agent goes live</h3>
+          <p>Your domain agent handles real workload. We monitor, iterate on guardrails,
+             and expand scope as trust is established.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- Early access CTA -->
+<section class="cta-section" id="early-access">
+  <div class="wrap">
+    <h2>Get early access</h2>
+    <p>We're onboarding a small number of domain partners. Tell us your industry and we'll reach out directly.</p>
+    <form id="accessForm" novalidate>
+      <div class="form-row">
+        <input type="text"  id="name"  placeholder="Your name"          autocomplete="name">
+        <input type="email" id="email" placeholder="Work email*"         autocomplete="email" required>
+        <input type="text"  id="domain" placeholder="Your industry / use case">
+        <button type="submit" class="btn btn-white">Request access</button>
+      </div>
+      <p class="form-note">No spam. We respond to every request personally.</p>
+      <p class="status-msg" id="statusMsg"></p>
+    </form>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p><strong style="color:#fff">Ascend Agentic</strong> — agentic AI infrastructure for domain specialists</p>
+    <div class="footer-links">
+      <a href="mailto:sam@ascendagentic.com">Contact</a>
+      <a href="#early-access">Early access</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Chat bubble -->
+<div id="chatBubble" onclick="toggleChat()" title="Ask our AI">
+  <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.261 2 11.5c0 2.388.94 4.57 2.487 6.218L3 21l3.588-1.077A10.3 10.3 0 0 0 12 21c5.523 0 10-4.261 10-9.5S17.523 2 12 2Z"/></svg>
 </div>
 
 <div id="chatPanel">
   <div class="chat-header">
     <div class="dot"></div>
-    <span>ATLAS AI</span>
+    <span>Ascend AI</span>
+    <small>Ask anything</small>
     <button class="close-btn" onclick="toggleChat()">×</button>
   </div>
   <div id="chatMessages">
-    <div class="msg agent">Hey! I'm the ATLAS AI. Ask me anything about what we're building, or how to get early access. 👋</div>
+    <div class="msg agent">Hi! I'm the Ascend Agentic AI. Ask me about domain agents, how we work, or how to get started. 👋</div>
   </div>
   <div class="chat-input-row">
-    <input id="chatInput" type="text" placeholder="Ask something…" autocomplete="off" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat();}">
+    <input id="chatInput" type="text" placeholder="Ask something…" autocomplete="off"
+      onkeydown="if(event.key==='Enter'){event.preventDefault();sendChat();}">
     <button id="chatSend" onclick="sendChat()">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg>
     </button>
   </div>
 </div>
 
 <script>
-  const params   = new URLSearchParams(location.search);
-  const API_BASE = (params.get('api') || '').replace(/\/$/, '');
-  const CHAT_BASE = (params.get('chat') || 'https://chat.ascendagentic.com').replace(/\/$/, '');
+  const CHAT_BASE = 'https://chat.ascendagentic.com';
+  const API_BASE  = (new URLSearchParams(location.search).get('api') || '').replace(/\/$/,'');
 
-  const form      = document.getElementById('emailForm');
-  const btn       = document.getElementById('submitBtn');
-  const statusEl  = document.getElementById('status');
-  const formView  = document.getElementById('formView');
-  const thanks    = document.getElementById('thanksView');
-  const phoneEl   = document.getElementById('phone');
-  const consentRow = document.getElementById('consentRow');
-  const consentCb  = document.getElementById('smsConsent');
-
-  phoneEl.addEventListener('input', () => {
-    consentRow.style.display = phoneEl.value.trim() ? 'flex' : 'none';
-  });
-
-  function showStatus(msg, type) {
-    statusEl.textContent = msg;
-    statusEl.className = 'status ' + type;
-  }
-
-  form.addEventListener('submit', async (e) => {
+  // ── Early access form ──
+  document.getElementById('accessForm').addEventListener('submit', async e => {
     e.preventDefault();
-
-    const email = document.getElementById('email').value.trim();
-    const name  = document.getElementById('name').value.trim();
-    const phone = phoneEl.value.trim();
-    const smsOptIn = consentCb.checked;
+    const email  = document.getElementById('email').value.trim();
+    const name   = document.getElementById('name').value.trim();
+    const domain = document.getElementById('domain').value.trim();
+    const msg    = document.getElementById('statusMsg');
 
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      showStatus('Please enter a valid email address.', 'error');
-      return;
+      showMsg('Please enter a valid email address.', '#f87171'); return;
     }
 
-    if (phone && !smsOptIn) {
-      showStatus('Please check the SMS consent box to continue, or remove your phone number.', 'error');
-      return;
-    }
+    const btn = e.target.querySelector('button');
+    btn.disabled = true; btn.textContent = 'Sending…';
 
-    btn.disabled = true;
-    btn.textContent = 'Submitting…';
-    statusEl.className = 'status';
-
-    const payload = {
-      email,
-      name,
-      phone:      phone || '',
-      sms_opt_in: smsOptIn,
-      source:     'sms_link',
-      consent_text: smsOptIn
-        ? 'User checked: I agree to receive SMS messages from Ascend Agentic / ATLAS'
-        : '',
-    };
+    const payload = { email, name, phone: '', sms_opt_in: false,
+      source: 'ascendagentic_homepage', domain_interest: domain };
 
     if (API_BASE) {
       try {
-        const res  = await fetch(`${API_BASE}/api/contacts/submit`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        const res = await fetch(`${API_BASE}/api/contacts/submit`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
         });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.detail || 'Submission failed');
-        _showThanks(email, smsOptIn);
-        return;
-      } catch (err) {
-        showStatus(err.message || 'Something went wrong — please try again.', 'error');
-        btn.disabled = false;
-        btn.textContent = 'Get early access';
-        return;
-      }
+        if (!res.ok) throw new Error();
+      } catch { /* best-effort */ }
     }
 
-    setTimeout(() => _showThanks(email, smsOptIn), 500);
+    showMsg("You're on the list — we'll be in touch soon.", '#fff');
+    btn.disabled = false; btn.textContent = 'Request access';
+    e.target.reset();
   });
 
-  function _showThanks(email, smsOptIn) {
-    document.getElementById('thanksMsg').innerHTML =
-      `We'll be in touch soon.<br>Keep an eye on <strong style="color:#e2e8f8">${email}</strong>.`;
-    if (!smsOptIn) {
-      document.querySelector('.stop-note').style.display = 'none';
-    }
-    formView.style.display = 'none';
-    thanks.style.display   = 'block';
+  function showMsg(text, color) {
+    const el = document.getElementById('statusMsg');
+    el.textContent = text; el.style.color = color; el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 6000);
   }
 
   // ── Chat ──
@@ -487,9 +763,7 @@
   function toggleChat() {
     const panel = document.getElementById('chatPanel');
     panel.classList.toggle('open');
-    if (panel.classList.contains('open')) {
-      document.getElementById('chatInput').focus();
-    }
+    if (panel.classList.contains('open')) document.getElementById('chatInput').focus();
   }
 
   function appendMsg(text, role) {
@@ -507,15 +781,11 @@
     const input = document.getElementById('chatInput');
     const text  = input.value.trim();
     if (!text) return;
-
     input.value = '';
     appendMsg(text, 'user');
-
-
     chatBusy = true;
     document.getElementById('chatSend').disabled = true;
     const typing = appendMsg('…', 'agent typing');
-
     try {
       const res = await fetch(`${CHAT_BASE}/chat`, {
         method: 'POST',
@@ -524,12 +794,11 @@
       });
       const data = await res.json();
       typing.remove();
-      if (!res.ok) throw new Error(data.detail || 'Error');
       chatSessionId = data.session_id;
       appendMsg(data.answer, 'agent');
-    } catch (err) {
+    } catch {
       typing.remove();
-      appendMsg("Sorry, I couldn't connect right now. Try again in a moment.", 'agent');
+      appendMsg("Couldn't connect right now — try again in a moment.", 'agent');
     } finally {
       chatBusy = false;
       document.getElementById('chatSend').disabled = false;
