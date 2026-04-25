@@ -175,6 +175,142 @@
       font-size: 11px;
       color: #3a3d5a;
     }
+
+    /* ── Chat bubble ── */
+    #chatBubble {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 52px;
+      height: 52px;
+      background: #6366f1;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(99,102,241,.45);
+      transition: transform .15s, background .15s;
+      z-index: 100;
+    }
+    #chatBubble:hover { transform: scale(1.08); background: #4f52d4; }
+    #chatBubble svg { width: 24px; height: 24px; fill: #fff; }
+
+    #chatPanel {
+      position: fixed;
+      bottom: 88px;
+      right: 24px;
+      width: 340px;
+      max-height: 480px;
+      background: #0e0e1f;
+      border: 1px solid #1a1a32;
+      border-radius: 16px;
+      box-shadow: 0 24px 60px rgba(0,0,0,.6);
+      display: none;
+      flex-direction: column;
+      z-index: 99;
+      overflow: hidden;
+    }
+    #chatPanel.open { display: flex; }
+
+    .chat-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid #1a1a32;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .chat-header .dot {
+      width: 8px; height: 8px;
+      background: #4ade80;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .chat-header span {
+      font-size: 13px;
+      font-weight: 700;
+      color: #e2e8f8;
+      flex: 1;
+    }
+    .chat-header .close-btn {
+      background: none;
+      border: none;
+      color: #6b7394;
+      cursor: pointer;
+      font-size: 18px;
+      padding: 0;
+      width: auto;
+      line-height: 1;
+    }
+    .chat-header .close-btn:hover { color: #e2e8f8; }
+
+    #chatMessages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .msg {
+      max-width: 85%;
+      padding: 9px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .msg.agent {
+      background: #16163a;
+      color: #c8cfea;
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .msg.user {
+      background: #6366f1;
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    .msg.typing { color: #4a4f78; font-style: italic; }
+
+    .chat-input-row {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      border-top: 1px solid #1a1a32;
+    }
+    #chatInput {
+      flex: 1;
+      background: #10101f;
+      border: 1px solid #252545;
+      border-radius: 8px;
+      color: #e2e8f8;
+      font-size: 13px;
+      padding: 9px 12px;
+      outline: none;
+      resize: none;
+      height: 38px;
+      margin-bottom: 0;
+    }
+    #chatInput:focus { border-color: #6366f1; }
+    #chatInput::placeholder { color: #3a3d5a; }
+    #chatSend {
+      width: 38px;
+      height: 38px;
+      padding: 0;
+      border-radius: 8px;
+      background: #6366f1;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background .15s;
+    }
+    #chatSend:hover { background: #4f52d4; }
+    #chatSend:disabled { background: #2a2a4a; cursor: not-allowed; }
+    #chatSend svg { width: 16px; height: 16px; fill: #fff; }
   </style>
 </head>
 <body>
@@ -232,6 +368,30 @@
 
 </div>
 
+<!-- ── Chat bubble ── -->
+<div id="chatBubble" title="Ask ATLAS AI" onclick="toggleChat()">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2C6.477 2 2 6.261 2 11.5c0 2.388.94 4.57 2.487 6.218L3 21l3.588-1.077A10.3 10.3 0 0 0 12 21c5.523 0 10-4.261 10-9.5S17.523 2 12 2Z"/>
+  </svg>
+</div>
+
+<div id="chatPanel">
+  <div class="chat-header">
+    <div class="dot"></div>
+    <span>ATLAS AI</span>
+    <button class="close-btn" onclick="toggleChat()">×</button>
+  </div>
+  <div id="chatMessages">
+    <div class="msg agent">Hey! I'm the ATLAS AI. Ask me anything about what we're building, or how to get early access. 👋</div>
+  </div>
+  <div class="chat-input-row">
+    <input id="chatInput" type="text" placeholder="Ask something…" autocomplete="off" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat();}">
+    <button id="chatSend" onclick="sendChat()">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    </button>
+  </div>
+</div>
+
 <script>
   const params   = new URLSearchParams(location.search);
   const API_BASE = (params.get('api') || '').replace(/\/$/, '');
@@ -245,7 +405,6 @@
   const consentRow = document.getElementById('consentRow');
   const consentCb  = document.getElementById('smsConsent');
 
-  // Show / hide consent checkbox when phone is entered
   phoneEl.addEventListener('input', () => {
     consentRow.style.display = phoneEl.value.trim() ? 'flex' : 'none';
   });
@@ -307,7 +466,6 @@
       }
     }
 
-    // No API configured — show success anyway
     setTimeout(() => _showThanks(email, smsOptIn), 500);
   });
 
@@ -319,6 +477,67 @@
     }
     formView.style.display = 'none';
     thanks.style.display   = 'block';
+  }
+
+  // ── Chat ──
+  let chatSessionId = null;
+  let chatBusy = false;
+
+  function toggleChat() {
+    const panel = document.getElementById('chatPanel');
+    panel.classList.toggle('open');
+    if (panel.classList.contains('open')) {
+      document.getElementById('chatInput').focus();
+    }
+  }
+
+  function appendMsg(text, role) {
+    const el = document.createElement('div');
+    el.className = 'msg ' + role;
+    el.textContent = text;
+    const msgs = document.getElementById('chatMessages');
+    msgs.appendChild(el);
+    msgs.scrollTop = msgs.scrollHeight;
+    return el;
+  }
+
+  async function sendChat() {
+    if (chatBusy) return;
+    const input = document.getElementById('chatInput');
+    const text  = input.value.trim();
+    if (!text) return;
+
+    input.value = '';
+    appendMsg(text, 'user');
+
+    if (!API_BASE) {
+      appendMsg("Agent is offline right now — sign up above and we'll reach out directly.", 'agent');
+      return;
+    }
+
+    chatBusy = true;
+    document.getElementById('chatSend').disabled = true;
+    const typing = appendMsg('…', 'agent typing');
+
+    try {
+      const res = await fetch(`${API_BASE}/api/visitor/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, session_id: chatSessionId, site: 'atlas' }),
+      });
+      const data = await res.json();
+      typing.remove();
+      if (!res.ok) throw new Error(data.detail || 'Error');
+      chatSessionId = data.session_id;
+      appendMsg(data.answer, 'agent');
+    } catch (err) {
+      typing.remove();
+      appendMsg("Sorry, I couldn't connect right now. Try again in a moment.", 'agent');
+    } finally {
+      chatBusy = false;
+      document.getElementById('chatSend').disabled = false;
+      input.focus();
+    }
   }
 </script>
 </body>
