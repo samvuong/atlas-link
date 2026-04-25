@@ -394,7 +394,8 @@
 
 <script>
   const params   = new URLSearchParams(location.search);
-  const API_BASE = (params.get('api') || 'https://api.ascendagentic.com').replace(/\/$/, '');
+  const API_BASE = (params.get('api') || '').replace(/\/$/, '');
+  const CHAT_BASE = (params.get('chat') || 'https://chat.ascendagentic.com').replace(/\/$/, '');
 
   const form      = document.getElementById('emailForm');
   const btn       = document.getElementById('submitBtn');
@@ -510,17 +511,13 @@
     input.value = '';
     appendMsg(text, 'user');
 
-    if (!API_BASE) {
-      appendMsg("Agent is offline right now — sign up above and we'll reach out directly.", 'agent');
-      return;
-    }
 
     chatBusy = true;
     document.getElementById('chatSend').disabled = true;
     const typing = appendMsg('…', 'agent typing');
 
     try {
-      const res = await fetch(`${API_BASE}/api/visitor/chat`, {
+      const res = await fetch(`${CHAT_BASE}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text, session_id: chatSessionId, site: 'atlas' }),
